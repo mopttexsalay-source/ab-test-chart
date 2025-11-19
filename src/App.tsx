@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { ABTestData } from './types/data';
+import Chart from './components/Chart';
 import './App.css';
 
 function App() {
@@ -29,8 +30,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1>A/B Test Results</h1>
-      <p>Chart coming soon...</p>
+      <Chart data={data} />
     </div>
   );
 }

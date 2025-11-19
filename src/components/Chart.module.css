@@ -1,0 +1,138 @@
+.container {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.leftControls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.rightControls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.chartControls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.panBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: 1px solid #E1DFE7;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #5E5D67;
+  transition: all 0.2s;
+}
+
+.panBtn:hover {
+  background: #f9f9f9;
+  border-color: #C7C5D0;
+}
+
+.panBtn:active {
+  transform: scale(0.95);
+}
+
+.zoomGroup {
+  display: flex;
+  border: 1px solid #E1DFE7;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.zoomBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: none;
+  cursor: pointer;
+  color: #5E5D67;
+  transition: all 0.2s;
+}
+
+.zoomBtn:first-child {
+  border-right: 1px solid #E1DFE7;
+}
+
+.zoomBtn:hover {
+  background: #f9f9f9;
+}
+
+.zoomBtn:active {
+  transform: scale(0.95);
+}
+
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #5E5D67;
+  transition: all 0.2s;
+}
+
+.refreshBtn:hover {
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+.refreshBtn:active {
+  transform: scale(0.95);
+}
+
+.chartWrapper {
+  margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .leftControls,
+  .rightControls {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 671px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .leftControls,
+  .rightControls {
+    flex-direction: column;
+    width: 100%;
+  }
+}
