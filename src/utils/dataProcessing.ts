@@ -66,7 +66,7 @@ export const processWeeklyData = (
 };
 
 export const getVariationColor = (index: number): string => {
-  const colors = ['#2D2D2D', '#5B8FF9', '#FF9845', '#73D13D'];
+  const colors = ['#5E5D67', '#3838E7', '#FF8346', '#73D13D'];
   return colors[index % colors.length];
 };
 
