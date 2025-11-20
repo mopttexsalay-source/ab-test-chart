@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { ABTestData } from './types/data';
 import Chart from './components/Chart';
+import { ThemeProvider } from './contexts/ThemeContext';
 import './App.css';
 
 function App() {
@@ -29,9 +30,11 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <Chart data={data} />
-    </div>
+    <ThemeProvider>
+      <div className="app">
+        <Chart data={data} />
+      </div>
+    </ThemeProvider>
   );
 }
 

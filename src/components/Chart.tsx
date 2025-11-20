@@ -25,12 +25,16 @@ import PanIcon from '../assets/icons/pan.svg?react';
 import ZoomInIcon from '../assets/icons/zoom-in.svg?react';
 import ZoomOutIcon from '../assets/icons/zoom-out.svg?react';
 import RefreshIcon from '../assets/icons/refresh.svg?react';
+import MoonIcon from '../assets/icons/moon.svg?react';
+import SunIcon from '../assets/icons/sun.svg?react';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface Props {
   data: ABTestData;
 }
 
 const Chart = ({ data }: Props) => {
+  const { theme, toggleTheme } = useTheme();
   const [selectedVariations, setSelectedVariations] = useState<string[]>(() =>
     data.variations.map((v) => getVariationId(v))
   );
@@ -86,6 +90,9 @@ const Chart = ({ data }: Props) => {
             onChange={(value) => setLineStyle(value as LineStyle)}
           />
           <div className={styles.chartControls}>
+            <button className={styles.themeBtn} onClick={toggleTheme} title={theme === 'light' ? 'Dark mode' : 'Light mode'}>
+              {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+            </button>
             <button className={styles.panBtn} title="Pan">
               <PanIcon />
             </button>
@@ -107,11 +114,15 @@ const Chart = ({ data }: Props) => {
       <div className={styles.chartWrapper}>
         <ResponsiveContainer width="100%" height={400}>
           <ChartComponent data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke={theme === 'dark' ? '#2A2E45' : '#f0f0f0'}
+              vertical={false}
+            />
             <XAxis
               dataKey="date"
-              tick={{ fontSize: 12, fill: '#8c8c8c' }}
-              axisLine={{ stroke: '#d9d9d9' }}
+              tick={{ fontSize: 12, fill: theme === 'dark' ? '#7C7C8C' : '#8c8c8c' }}
+              axisLine={{ stroke: theme === 'dark' ? '#3A3E55' : '#d9d9d9' }}
               tickLine={false}
               tickFormatter={(value) => {
                 const date = new Date(value);
@@ -119,7 +130,7 @@ const Chart = ({ data }: Props) => {
               }}
             />
             <YAxis
-              tick={{ fontSize: 12, fill: '#8c8c8c' }}
+              tick={{ fontSize: 12, fill: theme === 'dark' ? '#7C7C8C' : '#8c8c8c' }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(value) => `${value}%`}

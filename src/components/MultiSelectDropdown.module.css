@@ -8,10 +8,11 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: white;
-  border: 1px solid #C7C5D0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-input);
   border-radius: 4px;
   font-size: 14px;
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s;
   min-width: 180px;
@@ -27,6 +28,7 @@
   height: 12px;
   transition: transform 0.2s;
   flex-shrink: 0;
+  color: var(--text-tertiary);
 }
 
 .arrowUp {
@@ -37,8 +39,8 @@
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
-  background: white;
-  border: 1px solid #e8e8e8;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   min-width: 100%;
@@ -74,7 +76,7 @@
 
 .optionLabel {
   flex: 1;
-  color: #1B1B23;
+  color: var(--text-primary);
 }
 
 @media (max-width: 671px) {

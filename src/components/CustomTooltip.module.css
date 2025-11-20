@@ -1,6 +1,6 @@
 .tooltip {
-  background: white;
-  border: 1px solid #e8e8e8;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -22,7 +22,7 @@
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
   font-weight: 400;
-  color: #52515B;
+  color: var(--text-secondary);
 }
 
 .content {
@@ -55,20 +55,20 @@
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
   font-weight: 400;
-  color: #1B1B23;
+  color: var(--text-primary);
 }
 
 .trophy {
   flex-shrink: 0;
   margin-left: 10px;
-  color: #5E5D67;
+  color: var(--text-secondary);
 }
 
 .value {
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #52515B;
+  color: var(--text-secondary);
   margin-left: auto;
   padding-left: 1rem;
 }
