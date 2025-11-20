@@ -42,6 +42,12 @@ const Chart = ({ data }: Props) => {
   const [lineStyle, setLineStyle] = useState<LineStyle>('smooth');
   const chartRef = useRef<HTMLDivElement>(null);
 
+  const [zoomState, setZoomState] = useState<{
+    left: number | null;
+    right: number | null;
+  }>({ left: null, right: null });
+  const [isPanning, setIsPanning] = useState(false);
+
   const chartData = useMemo(() => {
     if (timeFrame === 'week') {
       return processWeeklyData(data.data, selectedVariations);
@@ -53,6 +59,91 @@ const Chart = ({ data }: Props) => {
     value: getVariationId(v),
     label: v.name,
   }));
+
+  const zoomedData = useMemo(() => {
+    if (zoomState.left === null || zoomState.right === null) {
+      return chartData;
+    }
+    return chartData.slice(zoomState.left, zoomState.right + 1);
+  }, [chartData, zoomState]);
+
+  const handleZoomIn = () => {
+    const dataLength = chartData.length;
+    if (dataLength === 0) return;
+
+    const currentLeft = zoomState.left ?? 0;
+    const currentRight = zoomState.right ?? dataLength - 1;
+    const range = currentRight - currentLeft;
+
+    if (range <= 5) return;
+
+    const newRange = Math.floor(range * 0.7);
+    const center = Math.floor((currentLeft + currentRight) / 2);
+    const newLeft = Math.max(0, center - Math.floor(newRange / 2));
+    const newRight = Math.min(dataLength - 1, newLeft + newRange);
+
+    setZoomState({ left: newLeft, right: newRight });
+  };
+
+  const handleZoomOut = () => {
+    const dataLength = chartData.length;
+    if (dataLength === 0) return;
+
+    const currentLeft = zoomState.left ?? 0;
+    const currentRight = zoomState.right ?? dataLength - 1;
+    const range = currentRight - currentLeft;
+
+    if (range >= dataLength - 1) {
+      setZoomState({ left: null, right: null });
+      return;
+    }
+
+    const newRange = Math.floor(range * 1.5);
+    const center = Math.floor((currentLeft + currentRight) / 2);
+    const newLeft = Math.max(0, center - Math.floor(newRange / 2));
+    const newRight = Math.min(dataLength - 1, newLeft + newRange);
+
+    setZoomState({ left: newLeft, right: newRight });
+  };
+
+  const handlePanLeft = () => {
+    const dataLength = chartData.length;
+    if (dataLength === 0) return;
+
+    const currentLeft = zoomState.left ?? 0;
+    const currentRight = zoomState.right ?? dataLength - 1;
+    const range = currentRight - currentLeft;
+
+    if (currentLeft === 0) return;
+
+    const step = Math.max(1, Math.floor(range * 0.2));
+    const newLeft = Math.max(0, currentLeft - step);
+    const newRight = newLeft + range;
+
+    setZoomState({ left: newLeft, right: newRight });
+  };
+
+  const handlePanRight = () => {
+    const dataLength = chartData.length;
+    if (dataLength === 0) return;
+
+    const currentLeft = zoomState.left ?? 0;
+    const currentRight = zoomState.right ?? dataLength - 1;
+    const range = currentRight - currentLeft;
+
+    if (currentRight >= dataLength - 1) return;
+
+    const step = Math.max(1, Math.floor(range * 0.2));
+    const newRight = Math.min(dataLength - 1, currentRight + step);
+    const newLeft = newRight - range;
+
+    setZoomState({ left: newLeft, right: newRight });
+  };
+
+  const handleReset = () => {
+    setZoomState({ left: null, right: null });
+    setIsPanning(false);
+  };
 
   const ChartComponent = lineStyle === 'area' ? AreaChart : LineChart;
   const curveType = lineStyle === 'smooth' || lineStyle === 'area' ? 'monotone' : 'linear';
@@ -93,18 +184,33 @@ const Chart = ({ data }: Props) => {
             <button className={styles.themeBtn} onClick={toggleTheme} title={theme === 'light' ? 'Dark mode' : 'Light mode'}>
               {theme === 'light' ? <MoonIcon /> : <SunIcon />}
             </button>
-            <button className={styles.panBtn} title="Pan">
+            {isPanning && zoomState.left !== null && zoomState.right !== null && (
+              <div className={styles.panControls}>
+                <button className={styles.panArrow} onClick={handlePanLeft} title="Pan left">
+                  ←
+                </button>
+                <button className={styles.panArrow} onClick={handlePanRight} title="Pan right">
+                  →
+                </button>
+              </div>
+            )}
+            <button
+              className={styles.panBtn}
+              onClick={() => setIsPanning(!isPanning)}
+              title="Pan"
+              style={{ opacity: isPanning && zoomState.left !== null && zoomState.right !== null ? 1 : 0.6 }}
+            >
               <PanIcon />
             </button>
             <div className={styles.zoomGroup}>
-              <button className={styles.zoomBtn} title="Zoom out">
+              <button className={styles.zoomBtn} onClick={handleZoomOut} title="Zoom out">
                 <ZoomOutIcon />
               </button>
-              <button className={styles.zoomBtn} title="Zoom in">
+              <button className={styles.zoomBtn} onClick={handleZoomIn} title="Zoom in">
                 <ZoomInIcon />
               </button>
             </div>
-            <button className={styles.refreshBtn} title="Reset">
+            <button className={styles.refreshBtn} onClick={handleReset} title="Reset">
               <RefreshIcon />
             </button>
           </div>
@@ -113,7 +219,7 @@ const Chart = ({ data }: Props) => {
 
       <div className={styles.chartWrapper}>
         <ResponsiveContainer width="100%" height={400}>
-          <ChartComponent data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
+          <ChartComponent data={zoomedData} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
             <CartesianGrid
               strokeDasharray="3 3"
               stroke={theme === 'dark' ? '#2A2E45' : '#f0f0f0'}
