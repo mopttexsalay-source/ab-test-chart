@@ -115,6 +115,15 @@ src/
 └── main.tsx
 ```
 
+## Author
+
+**Dmitriy Salamatov**
+
+- LinkedIn: [linkedin.com/in/mopttex](https://www.linkedin.com/in/mopttex)
+- Telegram: [@mopttexxx](https://t.me/mopttexxx)
+- Email: mopttexsalay@gmail.com
+- Phone: +7 (918) 032-72-60
+
 ## License
 
 MIT
