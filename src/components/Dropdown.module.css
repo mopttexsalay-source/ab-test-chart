@@ -64,3 +64,9 @@
   background: #e6f7ff;
   color: #1890ff;
 }
+
+@media (max-width: 671px) {
+  .trigger {
+    min-width: 100%;
+  }
+}

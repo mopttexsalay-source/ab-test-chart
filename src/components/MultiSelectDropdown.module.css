@@ -76,3 +76,9 @@
   flex: 1;
   color: #1B1B23;
 }
+
+@media (max-width: 671px) {
+  .trigger {
+    min-width: 100%;
+  }
+}
