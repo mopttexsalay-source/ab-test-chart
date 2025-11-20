@@ -117,7 +117,7 @@ src/
 
 ## Author
 
-**Dmitriy Salamatov**
+**Dmitriy Salay**
 
 - LinkedIn: [linkedin.com/in/mopttex](https://www.linkedin.com/in/mopttex)
 - Telegram: [@mopttexxx](https://t.me/mopttexxx)
