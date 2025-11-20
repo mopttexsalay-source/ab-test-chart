@@ -1,73 +1,120 @@
-# React + TypeScript + Vite
+# A/B Test Chart
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interactive line chart for visualizing A/B test conversion rates over time.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Interactive Line Chart**: Visualize conversion rates for multiple test variations
+- **Multi-Select Variations**: Choose which variations to display using checkboxes
+- **Time Frame Switching**: Toggle between daily and weekly data aggregation
+- **Line Style Options**: Switch between line, smooth, and area chart styles
+- **Light/Dark Theme**: Toggle between light and dark color schemes
+- **Zoom Controls**: Zoom in/out to focus on specific time periods
+- **Pan Controls**: Navigate through zoomed chart data
+- **Export to PNG**: Download chart as high-resolution PNG image
+- **Responsive Design**: Optimized layouts for screens from 320px to 1920px
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 18** with TypeScript
+- **Vite** for fast development and build
+- **Recharts** for data visualization
+- **html2canvas** for PNG export
+- **CSS Modules** for component styling
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Open [http://localhost:5173](http://localhost:5173) to view the application.
+
+## Build
+
+```bash
+npm run build
+```
+
+The production build will be created in the `dist` folder.
+
+## Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Data Format
+
+The application expects a `data.json` file in the `public` folder with the following structure:
+
+```json
+{
+  "variations": [
+    {
+      "id": 0,
+      "name": "Control"
+    },
+    {
+      "id": 1,
+      "name": "Variant A"
+    }
+  ],
+  "data": [
+    {
+      "date": "2024-01-01",
+      "visits": {
+        "0": 1000,
+        "1": 980
+      },
+      "conversions": {
+        "0": 52,
+        "1": 58
+      }
+    }
+  ]
+}
+```
+
+## Usage
+
+1. **Select Variations**: Click the variations dropdown to show/hide specific test variations
+2. **Change Time Frame**: Switch between Day and Week views
+3. **Change Line Style**: Choose between line, smooth, or area chart styles
+4. **Toggle Theme**: Click the moon/sun icon to switch between light and dark themes
+5. **Zoom**: Use +/- buttons to zoom in/out on the chart
+6. **Pan**: After zooming, click the pan button and use arrows to navigate
+7. **Reset**: Click the refresh button to reset zoom and pan
+8. **Export**: Click the download button to save the chart as PNG
+
+## Project Structure
+
+```
+src/
+├── assets/
+│   └── icons/          # SVG icons
+├── components/
+│   ├── Chart.tsx       # Main chart component
+│   ├── Chart.module.css
+│   ├── CustomTooltip.tsx
+│   ├── Dropdown.tsx
+│   └── MultiSelectDropdown.tsx
+├── contexts/
+│   └── ThemeContext.tsx
+├── types/
+│   └── data.ts
+├── utils/
+│   └── dataProcessing.ts
+├── App.tsx
+└── main.tsx
+```
+
+## License
+
+MIT
