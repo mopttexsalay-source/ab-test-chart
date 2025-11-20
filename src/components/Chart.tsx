@@ -27,7 +27,9 @@ import ZoomOutIcon from '../assets/icons/zoom-out.svg?react';
 import RefreshIcon from '../assets/icons/refresh.svg?react';
 import MoonIcon from '../assets/icons/moon.svg?react';
 import SunIcon from '../assets/icons/sun.svg?react';
+import DownloadIcon from '../assets/icons/download.svg?react';
 import { useTheme } from '../contexts/ThemeContext';
+import html2canvas from 'html2canvas';
 
 interface Props {
   data: ABTestData;
@@ -145,6 +147,24 @@ const Chart = ({ data }: Props) => {
     setIsPanning(false);
   };
 
+  const handleExportToPNG = async () => {
+    if (!chartRef.current) return;
+
+    try {
+      const canvas = await html2canvas(chartRef.current, {
+        backgroundColor: theme === 'dark' ? '#13172E' : '#ffffff',
+        scale: 2,
+      });
+
+      const link = document.createElement('a');
+      link.download = `ab-test-chart-${new Date().getTime()}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (error) {
+      console.error('Failed to export chart:', error);
+    }
+  };
+
   const ChartComponent = lineStyle === 'area' ? AreaChart : LineChart;
   const curveType = lineStyle === 'smooth' || lineStyle === 'area' ? 'monotone' : 'linear';
 
@@ -183,6 +203,9 @@ const Chart = ({ data }: Props) => {
           <div className={styles.chartControls}>
             <button className={styles.themeBtn} onClick={toggleTheme} title={theme === 'light' ? 'Dark mode' : 'Light mode'}>
               {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+            </button>
+            <button className={styles.downloadBtn} onClick={handleExportToPNG} title="Download as PNG">
+              <DownloadIcon />
             </button>
             {isPanning && zoomState.left !== null && zoomState.right !== null && (
               <div className={styles.panControls}>
