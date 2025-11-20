@@ -16,9 +16,9 @@ import {
   processWeeklyData,
   getVariationId,
   getVariationColor,
-  findBestVariation,
 } from '../utils/dataProcessing';
 import Dropdown from './Dropdown';
+import MultiSelectDropdown from './MultiSelectDropdown';
 import CustomTooltip from './CustomTooltip';
 import styles from './Chart.module.css';
 import PanIcon from '../assets/icons/pan.svg?react';
@@ -50,25 +50,6 @@ const Chart = ({ data }: Props) => {
     label: v.name,
   }));
 
-  const handleVariationChange = (value: string) => {
-    const allIds = data.variations.map((v) => getVariationId(v));
-    if (value === 'all') {
-      setSelectedVariations(allIds);
-    } else {
-      const varIds = value.split(',');
-      if (varIds.length > 0) {
-        setSelectedVariations(varIds);
-      }
-    }
-  };
-
-  const selectedVariationLabel =
-    selectedVariations.length === data.variations.length
-      ? 'All variations selected'
-      : selectedVariations.length === 1
-      ? data.variations.find((v) => getVariationId(v) === selectedVariations[0])?.name || ''
-      : `${selectedVariations.length} variations selected`;
-
   const ChartComponent = lineStyle === 'area' ? AreaChart : LineChart;
   const curveType = lineStyle === 'smooth' || lineStyle === 'area' ? 'monotone' : 'linear';
 
@@ -76,14 +57,11 @@ const Chart = ({ data }: Props) => {
     <div className={styles.container} ref={chartRef}>
       <div className={styles.controls}>
         <div className={styles.leftControls}>
-          <Dropdown
+          <MultiSelectDropdown
             label="All variations selected"
-            options={[
-              { value: 'all', label: 'All variations selected' },
-              ...variationOptions,
-            ]}
-            value={selectedVariations.length === data.variations.length ? 'all' : selectedVariations.join(',')}
-            onChange={handleVariationChange}
+            options={variationOptions}
+            selectedValues={selectedVariations}
+            onChange={setSelectedVariations}
           />
           <Dropdown
             label="Day"
